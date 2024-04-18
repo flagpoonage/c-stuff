@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "xft.h": "c",
+    "xfactor_draw.h": "c",
+    "string.h": "c",
+    "stdlib.h": "c",
+    "stdio.h": "c",
+    "stdarg.h": "c",
+    "time.h": "c",
+    "features.h": "c",
+    "unistd.h": "c"
+  }
+}

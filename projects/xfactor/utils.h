@@ -1,0 +1,1 @@
+void *xalloc(size_t member_count, size_t size);
