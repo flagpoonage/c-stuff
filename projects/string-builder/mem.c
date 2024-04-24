@@ -8,7 +8,7 @@ void *must_malloc(size_t size)
   void *ptr;
   if ((ptr = malloc(size)) == NULL)
   {
-    printf("Failed to malloc");
+    printf("Failed asdto malloc");
     exit(1);
   }
   return ptr;

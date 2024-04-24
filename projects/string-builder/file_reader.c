@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <string.h>
 #include "file_reader.h"
+#include "mem.h"
 
-static int readfile_tosb(char *filename, StringBuilder *sb)
+static FileReaderResultCode readfile_tosb(char *filename, StringBuilder *sb)
 {
-
   char c;
   char bytes[128];
   FILE *file;
@@ -15,7 +16,7 @@ static int readfile_tosb(char *filename, StringBuilder *sb)
 
   if (file == NULL)
   {
-    return -1;
+    return OpenFileFailed;
   }
 
   while ((c = fgetc(file)) != EOF)
@@ -26,33 +27,39 @@ static int readfile_tosb(char *filename, StringBuilder *sb)
   if (fclose(file) == EOF)
   {
     printf("Failed to close file");
-    return -1;
+    return CloseFileFailed;
   }
 
-  return 0;
+  return Normal;
 }
 
-FileReader fr_initfile(char *filename)
+FileReaderResultCode fr_readfile(char *filename, FileReader *reader)
 {
-  FileReader fr;
-  fr_readfile(filename, &fr);
-  return fr;
-}
-
-void fr_readfile(char *filename, FileReader *reader)
-{
-  StringBuilder sb;
-
-  sb_init(&sb, 1024, BUFFER_EXPAND_DOUBLE);
-  readfile_tosb(filename, &sb);
-
-  printf("The output is\n\n%s", sb.data);
-
-  reader->contents = sb.data;
-  reader->length = strlen(reader->contents);
+  reader->filename = strdup(filename);
+  reader->code = readfile_tosb(filename, reader->_sb);
+  return reader->code;
 }
 
 void fr_free(FileReader *reader)
 {
-  free(reader->contents);
+  sb_free(reader->_sb);
+  free(reader->filename);
+  free(reader);
+}
+
+FileReader *fr_init()
+{
+  FileReader *fr = must_malloc(sizeof(FileReader));
+  StringBuilder *sb;
+  fr->_sb = sb_init(1024, BUFFER_EXPAND_DOUBLE);
+  return fr;
+}
+
+int fr_contents_len(FileReader *fr)
+{
+  return fr->_sb->pos + 2;
+}
+
+void fr_getcontents(char *)
+{
 }

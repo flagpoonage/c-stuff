@@ -5,14 +5,44 @@
 #include <string.h>
 
 #include "file_reader.h"
-
-int main()
+// cmai
+int main(int argc, char *argv[])
 {
-  FileReader fr = fr_initfile("sb.c");
+  // if (argv[0])
+  //   printf("Arg %s", argv[0]);
+  if (argc != 2)
+  {
+    printf("Invalid argument length, expected 2 but got %d", argc);
+    exit(1);
+  }
 
-  FileReader fr2;
+  char *fname = argv[1];
 
-  fr_readfile("mem.c", &fr2);
+  FileReader *fr = fr_init();
+
+  if (fr_readfile(fname, fr) != Normal)
+  {
+    printf("Failed to read file %s", fname);
+    fr_free(fr);
+    exit(1);
+  }
+
+  printf("%d bytes at: %s\n", fr_contents_len(fr), fr->filename);
+
+  fr_free(fr);
+
+  // = fr_initfile("sb.c");
+
+  // if (fr.code != 0)
+  // {
+  //   fr_printerr(fr.errcode);
+  //   fr_free(&fr);
+  //   exit(1);
+  // }
+
+  // FileReader fr2;
+
+  // fr_readfile("mem.c", &fr2);
 
   // StringBuilder stringbuilder;
   // StringBuilder *sb = &stringbuilder;
@@ -25,11 +55,11 @@ int main()
 
   // sb_tostring(outstr, sb);
 
-  printf("Read this from the file:\n\n%s", fr.contents);
-  printf("Read this from the file:\n\n%s", fr2.contents);
+  // printf("Read this from the file:\n\n%s", fr.contents);
+  // printf("Read this from the file:\n\n%s", fr2.contents);
 
-  fr_free(&fr);
-  fr_free(&fr2);
+  // fr_free(&fr);
+  // fr_free(&fr2);
 }
 
 // int main()

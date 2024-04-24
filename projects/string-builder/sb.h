@@ -16,7 +16,7 @@ typedef struct StringBuilder
 #define BUFFER_EXPAND_DOUBLE 0
 #define BUFFER_EXPAND_LINEAR 1
 
-StringBuilder *sb_init(StringBuilder *string, int init_buffer, short expansion_mode);
+StringBuilder *sb_init(int init_buffer, short expansion_mode);
 void sb_free(StringBuilder *string);
 char *sb_tostring(char *dest, StringBuilder *string);
 void sb_push(StringBuilder *string, char c);

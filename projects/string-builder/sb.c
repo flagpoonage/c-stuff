@@ -9,8 +9,9 @@
 static int expand_storage(StringBuilder *string, int chars);
 static int push_bytes(StringBuilder *string, char *bytes, int len);
 
-StringBuilder *sb_init(StringBuilder *string, int init_buffer, short expansion_mode)
+StringBuilder *sb_init(int init_buffer, short expansion_mode)
 {
+  StringBuilder *string = must_malloc(sizeof(StringBuilder));
   string->data = must_malloc(init_buffer);
   string->pos = 0;
   string->len = init_buffer;
@@ -27,6 +28,7 @@ void sb_clear(StringBuilder *string)
 void sb_free(StringBuilder *string)
 {
   free(string->data);
+  free(string);
 }
 
 char *sb_tostring(char *dest, StringBuilder *string)
